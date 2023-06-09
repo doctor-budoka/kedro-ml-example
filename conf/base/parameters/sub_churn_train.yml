@@ -1,0 +1,48 @@
+sub_churn_train:
+    date_start: 2017-01-01
+    date_end: 2017-09-01
+    target: sub_churn
+    disallowed_features: ["months_missed", "date_start", "date_end", "sub_churn"]
+    random_seed: null
+    currency_transform_steps:
+        - fill_values:
+            src_columns: ["sub_hard", "sub_soft", "hard_balance", "soft_balance"]
+            value: 0
+        - std_aggregations:
+            src_columns: ["hard_balance", "soft_balance"]
+            groupby_cols: "char_id"
+            aggregations:
+                - agg_fn: mean
+                - agg_fn: max
+                - agg_fn: min
+                - agg_fn: std
+                  fillna: 1
+        - differences:
+            src_columns: ["hard_balance", "soft_balance"]
+            groupby_cols: "char_id"
+            periods: [1, 3, 6]
+            fill_self: true
+    pipeline_steps:
+        - name: drop_cols
+          transformer: feature_engine.selection.DropFeatures
+          features_to_drop: [sub_start_date, class_mastery_date, creation_date, sub_id, territory, total_kills, total_deaths]
+        - name: ohe_enc 
+          transformer: feature_engine.encoding.OneHotEncoder
+          variables: [race, class, gender, sub_type]
+        - name: impute_value
+          transformer: feature_engine.imputation.ArbitraryNumberImputer
+          arbitrary_number: 0
+        - name: feature_selection
+          transformer: KeepColumns
+          columns: [
+            months_to_mastery, age_at_sub, gender_F, gender_M, gender_N, 
+            race_A, race_B, race_C, race_D, race_E, 
+            class_H, class_T, class_R, class_A, class_C, class_W,
+            sub_type_hard, sub_type_soft, sub_type_balanced, sub_size, sub_months,
+            hard_balance, hard_balance_max, hard_balance_min, hard_balance_std,
+            soft_balance, soft_balance_max, soft_balance_min, soft_balance_mean,
+            hard_balance_diff_1, hard_balance_diff_3]
+        - name: model
+          transformer: sklearn.ensemble.RandomForestClassifier
+          n_estimators: 25
+          max_depth: 7

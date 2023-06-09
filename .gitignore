@@ -1,0 +1,17 @@
+**/.ipynb_checkpoints/*
+**/*.csv
+!data/01_raw/**/*.csv
+!src/tests/**/*.csv
+
+**/*.pkl
+**/*.txt
+!src/requirements.txt
+*.pyc
+
+**/credentials.yml
+**/__pycache__/*
+logs/*
+**/*.log
+dist/**
+
+**/.DS_store

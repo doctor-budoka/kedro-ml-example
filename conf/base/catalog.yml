@@ -1,0 +1,72 @@
+# Here you can define all your data sets by using simple YAML syntax.
+#
+# Documentation for this file format can be found in "The Data Catalog"
+# Link: https://kedro.readthedocs.io/en/stable/data/data_catalog.html
+sub_data:
+  type: pandas.CSVDataSet
+  filepath: data/01_raw/sub_data.csv
+  load_args:
+    parse_dates: ["sub_start_date"]
+
+sub_miss:
+  type: pandas.CSVDataSet
+  filepath: data/01_raw/sub_miss.csv
+  load_args:
+    parse_dates: ["start_date", "end_date"]
+
+characters:
+  type: pandas.CSVDataSet
+  filepath: data/01_raw/character_data.csv
+  load_args:
+    parse_dates: ["creation_date", "class_mastery_date"]
+
+character_currency:
+  type: pandas.CSVDataSet
+  filepath: data/01_raw/character_currency.csv
+  load_args:
+    parse_dates: ["date"]
+
+sub_churn_standard_features:
+  type: pandas.CSVDataSet
+  filepath: data/03_primary/sub_churn_standard_features${file_suffix}.csv
+  load_args:
+    parse_dates: ["sub_start_date", "creation_date", "class_mastery_date"]
+
+filtered_sub_churn_features:
+  type: pandas.CSVDataSet
+  filepath: data/04_feature/filtered_sub_churn_features${file_suffix}.csv
+  load_args:
+    parse_dates: ["sub_start_date", "creation_date", "class_mastery_date"]
+
+sub_churn_full_features_train:
+  type: pandas.CSVDataSet
+  filepath: data/04_feature/sub_churn_full_features_train${file_suffix}.csv
+
+sub_churn_fitted_pipeline:
+  type: pickle.PickleDataSet
+  filepath: data/06_models/sub_churn_model${file_suffix}.pkl
+  backend: pickle
+
+in_sample_score_report:
+  type: text.TextDataSet
+  filepath: data/08_reporting/in_sample_score_report${file_suffix}.txt
+
+sub_churn_full_features_score:
+  type: pandas.CSVDataSet
+  filepath: data/04_feature/sub_churn_full_features_score${file_suffix}.csv
+
+score_report:
+  type: text.TextDataSet
+  filepath: data/08_reporting/score_report${file_suffix}.txt
+
+sub_churn_predict_batch_transformed:
+  type: pandas.CSVDataSet
+  filepath: data/05_model_input/sub_churn_predict_batch_transformed${file_suffix}.txt
+
+sub_churn_predict_batch_predictions:
+  type: pandas.CSVDataSet
+  filepath: data/07_model_output/sub_churn_predict_batch_predictions${file_suffix}.txt
+
+predict_batch_score_report:
+  type: text.TextDataSet
+  filepath: data/08_reporting/predict_batch_score_report${file_suffix}.txt
