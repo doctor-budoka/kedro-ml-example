@@ -47,14 +47,28 @@ For CV, I'll do this once for each year and average the results.
 
 As for what kind of error we'll measure: I'm going to go with RMSE since we want to be right on average and we want to avoid being very wrong at any point in a day.
 
-# Baseline model 1: Prophet
+# Baseline model: Prophet
 
 For baseline models, I like to use models that give me a nice tradeoff between simplicity and ease of use (which aren't always the same) versus potential performance. The traditional methods for forecasting tend to be pretty simple though they vary in terms of ease of use and performance. For instance, averaging techniques, whether they be simple techniques like rolling averages or more complicated like a Kalman filter, are very easy to set up but tend not to do well with seasonality. More complicated methods on the other hand, like ANOVA, are hard to tune but tend to perform pretty well once tuned. 
 
 Prophet, though more complicated than ANOVA, is easier to tune and tends to give good results out of the box. For that reason, I have chosen to use prophet as my base line error. I'll use the default configuration with one exception: I'll add an hourly seasonality (since Prophet only goes to daily by default).
 
+## NB and results:
+
 You can find the notebook relating to this model in `01_baseline_prophet.ipynb`. The error over the 2 years averages out to 0.36.
 
 # Random Forest
 
-Another good tradeoff between simplicity and ease of use vs performance comes from Random Forest models. They tend to do pretty well with default configuration (as long as they don't overfit). In general, they also tend to perform better than the other algorithms on tabular data.   For this reason, at least on tabular data, I like to use this as a good first ML model (or even as my baseline). Time-series data isn't exactly tabular though so we can try it out quickly and if it doesn't do well we'll move on.
+Another good tradeoff between simplicity and ease of use vs performance comes from Random Forest models. Linear regression is certainly simpler and easier but random forests tend to predict better when the data isn't linear (which is most of the time). RFs tend to do pretty well with default configuration (at least as long as they don't overfit). In general, they also tend to perform better than the other algorithms on tabular data when we have the time to tune them properly.  For these reason,s at least on tabular data, I tend to use this as a good first ML model (or even as my baseline). 
+
+Time-series data isn't exactly tabular though so we'll do a little feature engineering in hopes that it can give it a bit more of an edge. 
+
+## NB and results:
+
+You can find the notebook relating to this model in `02_random_forest.ipynb`. The error over the 2 years averages out to 0.16, much better than Prophets showing.
+
+### Notes
+There's a few things that might contribute to this:
+1. The Random Forest wouldn't be able to capture the year to year trends at all but prophet would have. This means that long term (year to year) trends aren't as important as seasonal trends within the year. Though this is quite clear from the data anyway: The seasonal variation within a year  is much larger than the year to year variation. 
+2. Since year to year variation is small (possibly negligible), the problem becomes basically a tabular data problem, with only a tiny bias from the long term trends being ignored. Tabular data is where random forests excel.
+3. Prophet can be quite sensitive to hyperparameters at times. Maybe this is one of those times? Or perhaps the defaults for it are just not suitable for the current problem.
