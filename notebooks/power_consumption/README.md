@@ -72,3 +72,11 @@ There's a few things that might contribute to this:
 1. The Random Forest wouldn't be able to capture the year to year trends at all but prophet would have. This means that long term (year to year) trends aren't as important as seasonal trends within the year. Though this is quite clear from the data anyway: The seasonal variation within a year  is much larger than the year to year variation. 
 2. Since year to year variation is small (possibly negligible), the problem becomes basically a tabular data problem, with only a tiny bias from the long term trends being ignored. Tabular data is where random forests excel.
 3. Prophet can be quite sensitive to hyperparameters at times. Maybe this is one of those times? Or perhaps the defaults for it are just not suitable for the current problem.
+
+# Next steps: 
+
+1. Given how well the Random Forest did, we could take that and improve upon it with some better tuning. Or possibly try boosted trees instead. 
+2. Some form of recurrent neural network may be worth a try given the time-series nature of the data and the volume that we've got. Though I doubt it will produce better results easily:
+   1. NNs require a lot of data and this problem would probably require several layers, meaning we'd need more data. We may not have enough data here
+   2. Though NNs can be extremely accurate once tuned correctly, this tuning can be difficult and may requiring many revisions of the architecture. Given that these models are slow to train, this could take quite a while.
+   3. As mentioned above, the year to year variation is small by comparison to the seasonal variation, so this problem almost reduces to a tabular problem, where tree based models are extremely hard to beat. Also note that the actual use-case here is to predict just 24 hours in advance (not a whole year), so the "trending" part of the problem might be even less impactful in that case.
