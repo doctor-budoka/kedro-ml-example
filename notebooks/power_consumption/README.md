@@ -15,3 +15,9 @@ We use specifically the Dayton hourly dataset. Since the consumption here is for
 Note: This was last updated in 2023, so this figure likely doesn't match up well with the average during our dataset. It would however bring the data to roughly the right order of magnitude, which can easily be adjusted later when we have better information.
 
 This renormalisation is done by running the `00_data_prep` notebook in this folder and it produces the `01_raw/DAYTON_power_consumption.csv`, which is the data set the rest of the work is done on.
+
+## Assumptions of the renormalisation:
+
+1. As noted above, that the average kWh number for Dayton in 2023 is the same as from 2017-08-04 to 2018-08-03. Probably only accurate up to an order of magnitude
+2. That the total consumption time series is proportional to the consumption for a household. This is a poor assumption: It's very likely that industry makes up a large portion of the power consumption (or possibly even the majority) and the industry side of things likely has a very different pattern from household consumption.
+3. That we can just sum up the MW values from the dataset to get MWh over a year. I'm not well versed in this context so I can't be 100% sure this is correct.
