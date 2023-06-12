@@ -14,7 +14,7 @@ We use specifically the Dayton hourly dataset. Since the consumption here is for
 
 Note: This was last updated in 2023, so this figure likely doesn't match up well with the average during our dataset. It would however bring the data to roughly the right order of magnitude, which can easily be adjusted later when we have better information.
 
-This renormalisation is done by running the `00_data_prep` notebook in this folder and it produces the `01_raw/DAYTON_power_consumption.csv`, which is the data set the rest of the work is done on.
+This renormalisation is done by running the `00_data_prep` notebook in this folder and it produces the `01_raw/DAYTON_power_consumption.csv`, which is the data set the rest of the work is done on. In addition, this data is also split into train/CV/test datasets using this notebook and the data is saved to `02_intermediate/` under `{dataset name}_power.csv`.
 
 ## Assumptions of the renormalisation:
 
