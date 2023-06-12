@@ -47,6 +47,14 @@ For CV, I'll do this once for each year and average the results.
 
 As for what kind of error we'll measure: I'm going to go with RMSE since we want to be right on average and we want to avoid being very wrong at any point in a day.
 
-## Baseline model: Prophet
+# Baseline model 1: Prophet
 
-This is possibly the easiest and quickest way to get a time series prediction, though the amount of tuning it requires for good results can vary greatly . It is however much easier to tune than more traditional approaches to forecasting (like ANOVA). In addition, it is capable of capturing trends and seasonality, unlike simple averaging approaches (or even more complicated averaging approaches, like Kalman filters).
+For baseline models, I like to use models that give me a nice tradeoff between simplicity and ease of use (which aren't always the same) versus potential performance. The traditional methods for forecasting tend to be pretty simple though they vary in terms of ease of use and performance. For instance, averaging techniques, whether they be simple techniques like rolling averages or more complicated like a Kalman filter, are very easy to set up but tend not to do well with seasonality. More complicated methods on the other hand, like ANOVA, are hard to tune but tend to perform pretty well once tuned. 
+
+Prophet, though more complicated than ANOVA, is easier to tune and tends to give good results out of the box. For that reason, I have chosen to use prophet as my base line error. I'll use the default configuration with one exception: I'll add an hourly seasonality (since Prophet only goes to daily by default).
+
+You can find the notebook relating to this model in `01_baseline_prophet.ipynb`. The error over the 2 years averages out to 0.36.
+
+# Random Forest
+
+Another good tradeoff between simplicity and ease of use vs performance comes from Random Forest models. They tend to do pretty well with default configuration (as long as they don't overfit). In general, they also tend to perform better than the other algorithms on tabular data.   For this reason, at least on tabular data, I like to use this as a good first ML model (or even as my baseline). Time-series data isn't exactly tabular though so we can try it out quickly and if it doesn't do well we'll move on.
