@@ -55,7 +55,7 @@ Prophet, though more complicated than ANOVA, is easier to tune and tends to give
 
 ## NB and results:
 
-You can find the notebook relating to this model in `01_baseline_prophet.ipynb`. The error over the 2 years averages out to 0.36.
+You can find the notebook relating to this model in `01_baseline_prophet.ipynb`. The error over the 2 years averages out to 0.18.
 
 # Random Forest
 
@@ -65,18 +65,14 @@ Time-series data isn't exactly tabular though so we'll do a little feature engin
 
 ## NB and results:
 
-You can find the notebook relating to this model in `02_random_forest.ipynb`. The error over the 2 years averages out to 0.16, much better than Prophets showing.
+You can find the notebook relating to this model in `02_random_forest.ipynb`. The error over the 2 years averages out to 0.16, a little better than Prophets showing.
 
-### Notes
-There's a few things that might contribute to this:
-1. The Random Forest wouldn't be able to capture the year to year trends at all but prophet would have. This means that long term (year to year) trends aren't as important as seasonal trends within the year. Though this is quite clear from the data anyway: The seasonal variation within a year  is much larger than the year to year variation. 
-2. Since year to year variation is small (possibly negligible), the problem becomes basically a tabular data problem, with only a tiny bias from the long term trends being ignored. Tabular data is where random forests excel.
-3. Prophet can be quite sensitive to hyperparameters at times. Maybe this is one of those times? Or perhaps the defaults for it are just not suitable for the current problem.
+# Overall results
+
+We pick the random forest as our model for now. We check the error for the "final model" in `03_final_error.ipynb` and it turns out to be 0.17 over the final year, slightly worse than it's performance on the previous years.
 
 # Next steps: 
 
-1. Given how well the Random Forest did, we could take that and improve upon it with some better tuning. Or possibly try boosted trees instead. 
-2. Some form of recurrent neural network may be worth a try given the time-series nature of the data and the volume that we've got. Though I doubt it will produce better results easily:
-   1. NNs require a lot of data and this problem would probably require several layers, meaning we'd need more data. We may not have enough data here
-   2. Though NNs can be extremely accurate once tuned correctly, this tuning can be difficult and may requiring many revisions of the architecture. Given that these models are slow to train, this could take quite a while.
-   3. As mentioned above, the year to year variation is small by comparison to the seasonal variation, so this problem almost reduces to a tabular problem, where tree based models are extremely hard to beat. Also note that the actual use-case here is to predict just 24 hours in advance (not a whole year), so the "trending" part of the problem might be even less impactful in that case.
+1. It seems likely that both models could do with some tuning. After that, we might find that the better model would change.
+2. Boosted trees might be worth a try after that
+3. Some form of recurrent neural network may be worth a try given the time-series nature of the data and the volume that we've got (though we shouldn't build a model that's too deep). 
